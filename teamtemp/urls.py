@@ -13,6 +13,6 @@ urlpatterns = patterns('',
     url(r'^admin/$', login_required(admin), name='admin'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^accounts/register/$', register, name='register'),
-    url(r'^([0-9a-zA-Z]{8})$', submit),
+    url(r'^([0-9a-zA-Z]{8})$', submit, name='temp'),
     url(r'^static/(.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 )
