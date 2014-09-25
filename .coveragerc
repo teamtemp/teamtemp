@@ -1,0 +1,12 @@
+[run]
+branch = True
+source =
+    teamtemp
+omit =
+    venv/*
+    teamtemp/responses/migrations/*
+    teamtemp/tests/*
+    teamtemp/settings.py
+    teamtemp/wsgi.py
+[report]
+precision = 2
