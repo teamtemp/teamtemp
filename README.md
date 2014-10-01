@@ -16,3 +16,11 @@ export DJANGO_SETTINGS_MODULE=teamtemp.settings
 export DATABASE_URL=sqlite:///`pwd`/teamtemp.sqlite
 python manage.py test
 ```
+
+Coverage
+-------
+
+```
+coverage run manage.py test
+coverage report -m
+```
