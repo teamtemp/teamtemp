@@ -1,12 +1,19 @@
 import django
 from django.db import models
 
+from teamtemp import utils
+
+
+def make_uuid():
+    return utils.random_string(8)
+
+
 class User(models.Model):
     id = models.CharField(max_length=8, primary_key=True)
 
 
 class TeamTemperature(models.Model):
-    id = models.CharField(max_length=8, primary_key=True)
+    id = models.CharField(max_length=8, primary_key=True, default=make_uuid())
     creation_date = models.DateField()
     creator = models.ForeignKey(django.contrib.auth.models.User)
 
