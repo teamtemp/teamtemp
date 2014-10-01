@@ -24,3 +24,8 @@ Coverage
 coverage run manage.py test
 coverage report -m
 ```
+
+Build Health
+-----------
+[![Build Status](https://travis-ci.org/travisjwarren/teamtemp.svg)](https://travis-ci.org/travisjwarren/teamtemp)
+[![Coverage Status](https://coveralls.io/repos/travisjwarren/teamtemp/badge.png)](https://coveralls.io/r/travisjwarren/teamtemp)
