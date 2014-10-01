@@ -4,6 +4,8 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
+from teamtemp.responses.models import TeamTemperature
+
 
 class AdminViewTestCases(TestCase):
 
@@ -14,7 +16,7 @@ class AdminViewTestCases(TestCase):
 
         response = self.client.get(reverse('admin'))
 
-        self.assertContains(response, '', status_code=302)
+        self.assertRedirects(response, 'http://testserver/accounts/login/?next=/admin/')
 
     def test_admin_get_creation(self):
 
@@ -31,5 +33,5 @@ class AdminViewTestCases(TestCase):
 
         response = self.client.post(reverse('admin'))
 
-        # having form id created in post makes testing correct redirect difficult
-        self.assertContains(response, '', status_code=302)
+        self.assertRedirects(response, 'http://testserver/admin/{}'
+                             .format(TeamTemperature.objects.get(creator=self.user).id))

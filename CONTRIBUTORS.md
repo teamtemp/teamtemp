@@ -1,10 +1,10 @@
 TeamTemp contributors (sorted alphabeticaly)
 ============================================
 
-* **[Will Thames](https://github.com/willthames)**
+* **[Andrew Purcell](https://github.com/zpurcey)**
 
-* **[Travis Warren](https://github.com/travisjwarren)**
+* **[Will Thames](https://github.com/willthames)**
 
 * **[Michael Villis](https://github.com/mvillis)**
 
-* **[Andrew Purcell](https://github.com/zpurcey)**
+* **[Travis Warren](https://github.com/travisjwarren)**

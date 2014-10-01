@@ -4,20 +4,25 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.core.urlresolvers import reverse
+from django.views.generic import CreateView
 
-from responses.forms import SurveyResponseForm, ErrorBox
+from responses.forms import SurveyResponseForm, ErrorBox, TeamTemperatureForm
 from responses.models import User, TeamTemperature, TemperatureResponse
-from teamtemp import utils, responses
+from teamtemp import responses
 
 
-def admin(request):
-    if request.method == 'POST':
-        form_id = utils.random_string(8)
-        # TODO check that id is unique!
-        survey = TeamTemperature(creation_date=datetime.now(), creator=request.user, id=form_id)
-        survey.save()
-        return HttpResponseRedirect('/admin/%s' % form_id)
-    return render(request, 'admin.html')
+class CreateTeamTemperatureView(CreateView):
+    form_class = TeamTemperatureForm
+    template_name = 'admin.html'
+
+    def get_success_url(self):
+        return reverse('result', args=[str(self.object.id)])
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.instance.creation_date = datetime.now()
+        return super(CreateTeamTemperatureView, self).form_valid(form)
 
 
 def submit(request, survey_id):
@@ -59,10 +64,6 @@ def result(request, survey_id):
         raise PermissionDenied
 
 
-def home(request):
-    return render(request, 'index.html')
-
-
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -74,3 +75,4 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, "register.html", {'form': form, })
+

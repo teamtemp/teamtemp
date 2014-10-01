@@ -1,9 +1,17 @@
+import re
+
 from django import forms
 from django.forms.util import ErrorList
-from teamtemp.responses.models import TemperatureResponse
+from teamtemp.responses.models import TemperatureResponse, TeamTemperature
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
-import re
+
+
+class TeamTemperatureForm(forms.ModelForm):
+    class Meta:
+        model = TeamTemperature
+        fields = []
+
 
 class ErrorBox(ErrorList):
     def __unicode__(self):
@@ -15,6 +23,7 @@ class ErrorBox(ErrorList):
 
     def as_lines(self):
         return "<br/>".join(e for e in self)
+
 
 class SurveyResponseForm(forms.ModelForm):
     class Meta:
