@@ -2,13 +2,13 @@ from datetime import datetime
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
-from responses.forms import SurveyResponseForm, ErrorBox, TeamTemperatureForm
-from responses.models import User, TeamTemperature, TemperatureResponse
+from teamtemp.responses.mixins import CreatorRequiredMixin
+from teamtemp.responses.forms import SurveyResponseForm, ErrorBox, TeamTemperatureForm
+from teamtemp.responses.models import User, TeamTemperature, TemperatureResponse
 from teamtemp import responses
 
 
@@ -17,12 +17,18 @@ class CreateTeamTemperatureView(CreateView):
     template_name = 'admin.html'
 
     def get_success_url(self):
-        return reverse('result', args=[str(self.object.id)])
+        return reverse('result', kwargs={'pk': self.object.id})
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
         form.instance.creation_date = datetime.now()
         return super(CreateTeamTemperatureView, self).form_valid(form)
+
+
+class TeamTemperatureDetailView(CreatorRequiredMixin, DetailView):
+    model = TeamTemperature
+    template_name = 'results.html'
+    context_object_name = 'survey'
 
 
 def submit(request, survey_id):
@@ -52,16 +58,6 @@ def submit(request, survey_id):
 
         form = SurveyResponseForm(instance=previous)
     return render(request, 'form.html', {'form': form, 'thanks': thanks, 'response_id': response_id})
-
-
-def result(request, survey_id):
-    survey = get_object_or_404(TeamTemperature, pk=survey_id)
-    if request.user == survey.creator:
-        teamtemp = TeamTemperature.objects.get(pk=survey_id)
-        results = teamtemp.temperatureresponse_set.all()
-        return render(request, 'results.html', {'id': survey_id, 'stats': survey.stats(), 'results': results})
-    else:
-        raise PermissionDenied
 
 
 def register(request):

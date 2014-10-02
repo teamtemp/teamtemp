@@ -3,25 +3,44 @@
 {% block title %}Results{% endblock %}
 
 {% block body %}
-<div class="info box">Let your team know about this survey - send them 
-  <a href="{% url 'teamtemp.views.submit' id %}">this link</a>.</div>
+    <div class="page-header">
+        <h1>Team Temperature Results</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-1 col-md-9">
+            <h2 class="text-muted">Summary</h2>
+            <ul>
+              <li>Submissions: {{ survey.stats.count }}</li>
+              <li>Average temperature: {{ survey.stats.average.score__avg }}</li>
+              <li>Words:
+              {% for word in survey.stats.words %}
+              {{ word.word }}
+              {% if word.id__count > 1 %}({{ word.id__count }}){% endif %}
+                {% endfor %}</li>
+            </ul>
 
-<h1>Summary</h1>
-<ul>
-  <li>Submissions: {{ stats.count }}</li>
-  <li>Average temperature: {{ stats.average.score__avg }}</li>
-  <li>Words: 
-  {% for word in stats.words %}
-  {{ word.word }}
-  {% if word.id__count > 1 %}({{ word.id__count }}){% endif %}
-    {% endfor %}</li>
-</ul>
-
-<h1>Individual Responses</h1>
-<table>
-  <tr><th>Score</th><th>Word</th></tr>
-{% for result in results %}
-  <tr><td>{{result.score}}</td><td>{{result.word}}</td>
-{% endfor %}
-</table>
+            <h2 class="text-muted">Individual Responses</h2>
+            <table class="table table-bordered">
+              <tr><th>Score</th><th>Word</th></tr>
+            {% for result in survey.temperatureresponse_set.all %}
+              <tr><td>{{result.score}}</td><td>{{result.word}}</td>
+                {% empty %}
+                    <tr><td colspan="2"><span class="text-warning">No results.</span> </td> </tr>
+            {% endfor %}
+            </table>
+        </div>
+        <div class="col-sm-1 col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Share this Survey
+                    </div>
+                </div>
+                <div class="panel-body">
+                    Let your team know about this survey - send them
+                        <a href="{% url 'temp' survey.id %}">this link</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

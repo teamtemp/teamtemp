@@ -1,5 +1,7 @@
 import django
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+
 
 from teamtemp import utils
 
@@ -33,8 +35,15 @@ class TeamTemperature(models.Model):
 class TemperatureResponse(models.Model):
     request = models.ForeignKey(TeamTemperature)
     responder = models.ForeignKey(User)
-    score = models.IntegerField()
-    word = models.CharField(max_length=32)
+    score = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
+        verbose_name='Temperature (1-10)')
+    word = models.CharField(
+        max_length=32,
+        verbose_name="One word to describe how you're feeling",
+        validators=[RegexValidator(regex='^[A-Za-z0-9\'-]+$',
+                                   message="please enter a single word with alphanumeric characters only.",
+                                   code='Invalid Word')])
 
     def __unicode__(self):
         return u"{}: {} {} {} {}".format(self.id, self.request.id,
