@@ -28,3 +28,4 @@ coverage report -m
 Build Health
 -----------
 [![Build Status](https://travis-ci.org/teamtemp/teamtemp.svg?branch=master)](https://travis-ci.org/teamtemp/teamtemp)
+[![Coverage Status](https://coveralls.io/repos/teamtemp/teamtemp/badge.png)](https://coveralls.io/r/teamtemp/teamtemp)
