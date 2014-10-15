@@ -4,24 +4,26 @@
 
 {% block body %}
 <div class="info box">Let your team know about this survey - send them 
-  <a href="{% url 'teamtemp.views.submit' id %}">this link</a>.</div>
+  <a href="{% url 'temp' survey.id %}">this link</a>.</div>
 
 <h1>Summary</h1>
 <ul>
-  <li>Submissions: {{ stats.count }}</li>
-  <li>Average temperature: {{ stats.average.score__avg }}</li>
+  <li>Submissions: {{ survey.stats.count }}</li>
+  <li>Average temperature: {{ survey.stats.average.score__avg }}</li>
   <li>Words: 
-  {% for word in stats.words %}
+  {% for word in survey.stats.words %}
   {{ word.word }}
   {% if word.id__count > 1 %}({{ word.id__count }}){% endif %}
     {% endfor %}</li>
 </ul>
 
 <h1>Individual Responses</h1>
-<table>
+<table class="table table-bordered">
   <tr><th>Score</th><th>Word</th></tr>
-{% for result in results %}
+{% for result in survey.temperatureresponse_set.all %}
   <tr><td>{{result.score}}</td><td>{{result.word}}</td>
+    {% empty %}
+        <tr><td colspan="2"><span class="text-warning">No results.</span> </td> </tr>
 {% endfor %}
 </table>
 {% endblock %}
