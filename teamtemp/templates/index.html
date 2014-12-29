@@ -3,6 +3,9 @@
 {% block title %}Team Temperature{% endblock %}
 
 {% block body %}
-<div><a href="{% url "register" %}">Register</a></div>
-<h1>Welcome to Team Temperature</h1>
+    <div class="jumbotron">
+        <h1>Team Temperature</h1>
+        <p>Welcome to Team Temperature.</p>
+        <p><a class="btn btn-lg btn-primary" href="{% url "register" %}">Register</a></p>
+    </div>
 {% endblock %}
