@@ -37,6 +37,14 @@ class AdminViewTestCases(TestCase):
         self.assertRedirects(response, 'http://testserver/admin/{}/'
                              .format(TeamTemperature.objects.get(creator=self.user).id))
 
+    def test_admin_post_logout(self):
+
+        self.assertTrue(self.client.login(username=self.user.username, password='password'))
+
+        response = self.client.post(reverse('logout'))
+
+        self.assertRedirects(response, reverse('home'))
+
 
 class AdminResultViewTestCases(TestCase):
     def setUp(self):
