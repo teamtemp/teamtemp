@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Team Temperature{% endblock %}
+{% block title %}Team Temp{% endblock %}
 
 {% block body %}
     <div class="jumbotron">
-        <h1>Team Temperature</h1>
-        <p>Welcome to Team Temperature.</p>
-        <p><a class="btn btn-lg btn-primary" href="{% url "register" %}">Register</a></p>
+        <h1>Team Temp</h1>
+
+        <p>A simple way to measure the ongoing happiness of your team.</p>
+        {% if user.is_authenticated %}
+        <p><a class="btn btn-primary btn-lg" role="button" href="{% url "admin" %}">Admin</a></p>
+        {% else %}
+        <p><a class="btn btn-primary btn-lg" role="button" href="{% url "register" %}">Register</a> <a
+                class="btn btn-primary btn-lg" role="button" href="{% url "login" %}?next={% url 'admin' %}">Log In</a></p>
+        {% endif %}
     </div>
 {% endblock %}
